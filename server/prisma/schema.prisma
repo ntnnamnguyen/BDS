@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model LegacyCustomer {
+  id          Int      @id @default(autoincrement())
+  email       String?
+  name        String?
+  phoneNumber String?  @map("phone_number")
+  note        String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  lead        Lead?
+
+  @@map("customer")
+}
+
+model Project {
+  id                String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String
+  slug              String            @unique
+  description       String?           @db.Text
+  thumbnailUrl      String?
+  publicationStatus PublicationStatus @default(DRAFT) @map("status")
+  location          String?
+  priceRange        String?            @map("price_range")
+  salesStatus       SalesStatus        @default(COMING_SOON) @map("sales_status")
+  legalStatus       String?            @map("legal_status")
+  expectedYield     String?            @map("expected_yield")
+  features          Json              @default("[]")
+  analysis          Json?
+  featured          Boolean           @default(false)
+  sortOrder         Int                @default(0) @map("sort_order")
+  publishedAt       DateTime?          @map("published_at")
+  seoTitle          String?
+  seoDescription    String?
+  page              ProjectPage?
+  leads             Lead[]
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+
+  @@map("projects")
+}
+
+model ProjectPage {
+  id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectId String  @unique @map("project_id") @db.Uuid
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  blocks    Json    @default("[]")
+  version   Int     @default(1)
+
+  @@map("project_pages")
+}
+
+model Media {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  publicId  String   @unique
+  url       String
+  fileName  String?
+  folder    String?
+  size      Int?
+  createdAt DateTime @default(now())
+}
+
+model Lead {
+  id                 String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  legacyCustomerId   Int?            @unique @map("legacy_customer_id")
+  legacyCustomer     LegacyCustomer? @relation(fields: [legacyCustomerId], references: [id], onDelete: SetNull)
+  fullName           String          @map("full_name")
+  phone              String
+  email              String?
+  message            String?         @db.Text
+  projectId          String?         @map("project_id") @db.Uuid
+  project            Project?        @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  interestData       Json?           @map("interest_data")
+  sourcePath         String?         @map("source_path")
+  clientRequestId    String?         @unique @map("client_request_id")
+  status             LeadStatus      @default(NEW)
+  createdAt          DateTime        @default(now()) @map("created_at")
+  updatedAt          DateTime        @updatedAt @map("updated_at")
+
+  @@index([projectId])
+  @@index([status, createdAt])
+  @@index([phone])
+  @@index([email])
+  @@map("leads")
+}
+
+enum PublicationStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+
+  @@map("ProjectStatus")
+}
+
+enum SalesStatus {
+  OPEN_FOR_SALE
+  COMING_SOON
+  HANDED_OVER
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  FOLLOWING
+  CLOSED
+  CANCELLED
+}

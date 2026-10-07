@@ -1,0 +1,96 @@
+# compiled output
+/dist
+/node_modules
+/build
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+
+# Tests
+/coverage
+/.nyc_output
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# dotenv environment variable files
+.env
+.env.*
+!.env.example
+
+# temp directory
+.temp
+.tmp
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+/src/generated/prisma
+
+# Package manager and build caches
+.pnpm-store/
+.npm/
+.cache/
+.turbo/
+*.tsbuildinfo
+
+# Local credentials, deployment and agent settings
+.aws/
+.ssh/
+*.pem
+*.key
+*.p12
+*.pfx
+.vercel/
+.netlify/
+.codex/
+.agents/
+
+# Local backups and databases (keep Prisma SQL migrations)
+tmp/
+backups/
+*.bak
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-wal
+*.sqlite3-shm
+
+# Additional OS and editor files
+._*
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~

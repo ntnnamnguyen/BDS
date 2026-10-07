@@ -1,0 +1,216 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* --- PHÔNG CHỮ --- */
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-heading: var(--font-serif); /* Tiêu đề mặc định dùng Serif cho sang trọng */
+
+  /* --- MÀU SẮC ĐẶC TRƯNG QUIET LUXURY --- */
+  --color-luxury-base: #F2EFED;   /* Nền cát ấm */
+  --color-luxury-ink: #1A1A1A;    /* Đen gỗ mun */
+  --color-luxury-bronze: #8C7355; /* Đồng cổ */
+  --color-luxury-stone: #7E7872;  /* Xám đá */
+  --color-luxury-taupe: #D9D1C7;  /* Màu kem đậm */
+
+  /* --- MAPPING HỆ THỐNG SHADCN --- */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* --- BO GÓC (RADIUS) --- */
+  /* Quiet Luxury ưu tiên góc vuông hoặc bo cực nhẹ (Sharp edges) */
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) * 1.5);
+  --radius-xl: calc(var(--radius) * 2);
+
+  /* --- TIỆN ÍCH KHÁC --- */
+  --letter-spacing-luxury: 0.15em;
+}
+
+:root {
+  /* Bảng màu chủ đạo (Light Mode) */
+  --background: #F2EFED;     /* luxury-base */
+  --foreground: #1A1A1A;     /* luxury-ink */
+
+  --card: #F2EFED;
+  --card-foreground: #1A1A1A;
+
+  --popover: #F2EFED;
+  --popover-foreground: #1A1A1A;
+
+  --primary: #8C7355;        /* luxury-bronze */
+  --primary-foreground: #F2EFED;
+
+  --secondary: #D9D1C7;      /* luxury-taupe */
+  --secondary-foreground: #1A1A1A;
+
+  --muted: #D9D1C7;          /* luxury-taupe */
+  --muted-foreground: #7E7872;
+
+  --accent: #E5E0DA;         /* Một tông sáng hơn của taupe */
+  --accent-foreground: #8C7355;
+
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+
+  --border: #D1CDC7;         /* Viền mảnh, hòa quyện với nền */
+  --input: #D1CDC7;
+  --ring: #8C7355;
+
+  /* Radius cực nhỏ cho cảm giác kiến trúc sắc sảo */
+  --radius: 0.15rem;
+}
+.mapboxgl-map {
+  height: 100%;
+  width: 100%;
+}
+
+.dark {
+  /* Chế độ tối: Xám than ấm, không dùng đen tuyệt đối để giữ sự sang trọng */
+  --background: #1C1B1A;
+  --foreground: #F2EFED;
+
+  --card: #262423;
+  --card-foreground: #F2EFED;
+
+  --popover: #262423;
+  --popover-foreground: #F2EFED;
+
+  --primary: #B29676;        /* Đồng sáng hơn một chút trên nền tối */
+  --primary-foreground: #1C1B1A;
+
+  --secondary: #33312F;
+  --secondary-foreground: #F2EFED;
+
+  --muted: #33312F;
+  --muted-foreground: #A19B95;
+
+  --accent: #3D3A37;
+  --accent-foreground: #B29676;
+
+  --border: #3D3A37;
+  --input: #3D3A37;
+  --ring: #B29676;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    /* Hiệu ứng hạt mịn (Grainy) tinh tế nếu bạn muốn web "nghệ" hơn */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif tracking-tight leading-tight;
+  }
+
+  /* Tùy chỉnh thanh cuộn (Scrollbar) theo phong cách tối giản */
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/40;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+/* app/globals.css hoặc styles/print.css */
+@media print {
+  @page {
+    size: A4;
+    margin: 20mm; /* Khoảng cách lề vừa đủ sang trọng */
+  }
+
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  /* Tránh việc biểu đồ hoặc bảng bị cắt làm đôi khi chuyển trang */
+  h2, h3, img, .recharts-responsive-container, table {
+    break-inside: avoid;
+  }
+
+  /* Ẩn bớt những thành phần thừa của trình duyệt (Header/Footer mặc định) */
+  .site-header, .site-footer, .site-nav, .no-print {
+    display: none !important;
+  }
+}
+
+/* Ghi đè CSS cho Sonner Toast */
+[data-sonner-toast] {
+  --radius: 0px !important; /* Luxury thường là góc vuông sắc cạnh */
+  font-family: var(--font-serif); /* Hoặc font chữ chính của dự án bạn */
+}
+
+[data-sonner-toast][data-type="success"] [data-icon] {
+  color: #C0A080 !important; /* Đổi màu icon success sang màu Bronze */
+}
+
+/* Hiệu ứng loading tinh tế hơn */
+[data-sonner-toast] [data-loader] {
+  border-color: #C0A080 !important;
+  border-right-color: transparent !important;
+}
+/* Tùy chỉnh icon và overlay của react-medium-zoom */
+[data-rmz-overlay] {
+  background-color: rgba(26, 26, 26, 0.9) !important; /* luxury-ink với độ trong suốt */
+}
+
+[data-rmz-btn-unzoom] {
+  background-color: #C0A080 !important; /* luxury-bronze */
+  color: white !important;
+  border-radius: 0 !important; /* Vuông vức sang trọng */
+  cursor: pointer;
+}
+
+/* Hiệu ứng kính lúp đặc thù */
+.cursor-zoom-in:hover::after {
+  content: 'CLICK TO ENLARGE';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(192, 160, 128, 0.9); /* luxury-bronze */
+  color: white;
+  padding: 8px 16px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  pointer-events: none;
+  z-index: 10;
+  font-family: var(--font-sans);
+}

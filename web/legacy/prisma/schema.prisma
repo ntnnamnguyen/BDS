@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+model customer { 
+  id    Int     @id @default(autoincrement()) 
+  email String?  
+  name  String?
+  phone_number String?
+  note String?
+  created_at DateTime @default(now())
+} 
+// schema.prisma
+
+// 1. Quản lý chung dự án
+model Project {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String       // Tên dự án: Vinhomes Metropolis
+  slug          String       @unique // vinhomes-metropolis
+  description   String?      @db.Text
+  thumbnailUrl  String?      // Ảnh đại diện dự án
+  
+  // Status để quản lý luồng xuất bản
+  status        ProjectStatus @default(DRAFT)
+  
+  // SEO Metadata
+  seoTitle       String?
+  seoDescription String?
+  
+  // Quan hệ 1-1 với nội dung trang
+  page          ProjectPage?
+  
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+
+  @@map("projects")
+}
+
+// 2. Lưu trữ các Block nội dung
+model ProjectPage {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectId  String   @unique @db.Uuid @map("project_id")
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  // Cột quan trọng nhất: Chứa mảng các Block (LocationBlock, PricingBlock, v.v.)
+  // Dữ liệu tuân thủ theo các Interface TypeScript bạn đã định nghĩa
+  blocks     Json     @default("[]") 
+  
+  // Quản lý phiên bản (Version Control)
+  version    Int      @default(1)
+  
+  @@map("project_pages")
+}
+
+// 3. Quản lý Media (Cloudinary)
+model Media {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  publicId  String   @unique // public_id từ Cloudinary
+  url       String
+  fileName  String?
+  folder    String?  // hanoi-estate/projects/slug/gallery
+  size      Int?     // Dung lượng file (bytes)
+  
+  createdAt DateTime @default(now())
+}
+
+enum ProjectStatus {
+  DRAFT      // Bản nháp
+  PUBLISHED  // Đã xuất bản
+  ARCHIVED   // Đã lưu trữ/Ẩn
+}

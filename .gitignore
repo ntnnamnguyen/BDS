@@ -1,0 +1,73 @@
+# Dependencies and package manager caches
+node_modules/
+.pnpm-store/
+.npm/
+.pnp
+.pnp.*
+
+# Build output and caches
+.next/
+out/
+dist/
+build/
+.cache/
+.turbo/
+*.tsbuildinfo
+next-env.d.ts
+/server/src/generated/prisma/
+
+# Tests and logs
+coverage/
+.nyc_output/
+logs/
+*.log
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Local environment and credentials; commit only placeholder examples
+.env
+.env.*
+!.env.example
+.aws/
+.ssh/
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Local deployment and agent settings
+.vercel/
+.netlify/
+.codex/
+.agents/
+
+# Temporary files and local database backups
+.temp/
+.tmp/
+tmp/
+backups/
+*.bak
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-wal
+*.sqlite3-shm
+*.pid
+*.pid.lock
+
+# OS and editor files
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+.idea/
+*.swp
+*.swo
+*~
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
